@@ -1,7 +1,9 @@
-require_relative 'lib/links_scraper'
 require 'fileutils'
 require 'time'
 require 'logger'
+
+require_relative 'lib/links_scraper'
+require_relative 'lib/cars_scraper'
 
 logger = Logger.new('error.log')
 logger.level = Logger::DEBUG
@@ -12,7 +14,7 @@ def fetch_links(links_url, output_file)
     puts 'Found cached links.'
     links = File.readlines(output_file).map(&:chomp)
   else
-    puts "No cached links found. Scraping links from #{links_url}"
+    puts "No unexpired cached links found. Scraping links from #{links_url}"
     links_scraper = LinksScraper.new(links_url)
     links_scraper.scrape_links
     links = links_scraper.filtered_links
@@ -37,6 +39,11 @@ begin
 
   puts 'First 4 links:'
   links.first(4).each { |link| puts link }
+
+  puts "\nScraping cars..."
+  cars_scraper = CarsScraper.new(links)
+  cars_scraper.scrape_cars
+  cars = cars_scraper.cars
 rescue IOError => e
   logger.error("IOError occurred: #{e.message}")
   logger.error(e.backtrace.join("\n"))

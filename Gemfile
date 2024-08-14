@@ -7,3 +7,5 @@ source "https://rubygems.org"
 gem "nokogiri", "~> 1.16"
 
 gem "open-uri", "~> 0.4.1"
+
+gem "concurrent-ruby", "~> 1.3"
