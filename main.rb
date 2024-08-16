@@ -44,7 +44,7 @@ begin
   puts "\nNumber of links: #{links.size}"
 
   puts "\nScraping cars..."
-  cars_scraper = CarsScraper.new(links.first(14))
+  cars_scraper = CarsScraper.new(links.first(304))
   cars_scraper.scrape_cars
   cars = cars_scraper.cars
 
