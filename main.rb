@@ -4,6 +4,7 @@ require 'logger'
 
 require_relative 'lib/links_scraper'
 require_relative 'lib/cars_scraper'
+require_relative 'lib/csv_generator'
 
 logger = Logger.new('error.log')
 logger.level = Logger::DEBUG
@@ -35,15 +36,24 @@ begin
   puts 'Fetching links...'
   links = fetch_links(links_url, output_links_file)
 
-  puts "Number of links: #{links.size}"
-
-  puts 'First 4 links:'
-  links.first(4).each { |link| puts link }
+  puts "\nNumber of links: #{links.size}"
 
   puts "\nScraping cars..."
-  cars_scraper = CarsScraper.new(links)
+  cars_scraper = CarsScraper.new(links.first(304))
   cars_scraper.scrape_cars
   cars = cars_scraper.cars
+
+  # cars.each do |car|
+  #   puts car.to_s
+  #   puts "-------------------"
+  # end
+  
+  puts "\nGenerating CSV file..."
+  csv_file_path = 'cars.csv'
+  csv_generator = CSVGenerator.new(cars, csv_file_path)
+  csv_generator.generate_csv
+
+  puts "\nSuccessfully scraped and generated cars file: #{csv_file_path}"
 rescue IOError => e
   logger.error("IOError occurred: #{e.message}")
   logger.error(e.backtrace.join("\n"))

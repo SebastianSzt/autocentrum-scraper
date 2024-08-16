@@ -9,6 +9,6 @@ class Car
   end
 
   def to_s
-    @features.map { |key, value| "#{key}: #{value}" }.join(', ')
+    @features.map { |key, value| "#{key}: #{value}" }.join("\n")
   end
 end

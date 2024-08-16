@@ -34,9 +34,16 @@ class CarsScraper
 
     car_attributes = {}
 
-    puts 'Scraping car attributes... ' + link
-
-    #TODO: Implement scraping of car attributes
+    car_attributes['Link'] = link
+    car_attributes['Marka'] = doc.css('.breadcrumb li:nth-child(3) a span').text.strip.encode('UTF-8')
+    car_attributes['Model'] = doc.css('.breadcrumb li:nth-child(4) a span').text.strip.encode('UTF-8')
+    car_attributes['Silnik'] = doc.css('.breadcrumb li:nth-child(5) a span').text.strip.encode('UTF-8')
+    
+    doc.css('.dt-row').each do |row|
+      attribute_name = row.css('.dt-row__text__content').text.strip.encode('UTF-8')
+      attribute_value = row.css('.dt-param-value').text.strip.encode('UTF-8')
+      car_attributes[attribute_name] = attribute_value
+    end
 
     Car.new(car_attributes)
   end
