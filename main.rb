@@ -9,6 +9,11 @@ require_relative 'lib/csv_generator'
 logger = Logger.new('error.log')
 logger.level = Logger::DEBUG
 
+# Fetches links from a sitemap or uses cached links if available and not expired.
+#
+# @param links_url [String] the URL of the sitemap XML file.
+# @param output_file [String] the path to the file where cached links are stored.
+# @return [Array<String>] the list of links to be scraped.
 def fetch_links(links_url, output_file)
   puts "Checking if links are cached in #{output_file}."
   if File.exist?(output_file) && (Time.now - File.mtime(output_file)) < 7 * 24 * 60 * 60
@@ -39,10 +44,11 @@ begin
   puts "\nNumber of links: #{links.size}"
 
   puts "\nScraping cars..."
-  cars_scraper = CarsScraper.new(links.first(304))
+  cars_scraper = CarsScraper.new(links.first(14))
   cars_scraper.scrape_cars
   cars = cars_scraper.cars
 
+  # Uncomment the lines below to print each car's details to the console.
   # cars.each do |car|
   #   puts car.to_s
   #   puts "-------------------"
