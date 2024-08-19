@@ -44,16 +44,16 @@ begin
   puts "\nNumber of links: #{links.size}"
 
   puts "\nScraping cars..."
-  cars_scraper = CarsScraper.new(links.first(304))
+  cars_scraper = CarsScraper.new(links.first(5500))
   cars_scraper.scrape_cars
   cars = cars_scraper.cars
 
-  # Uncomment the lines below to print each car's details to the console.
-  # cars.each do |car|
-  #   puts car.to_s
-  #   puts "-------------------"
-  # end
-  
+  puts "\nNumber of cars scraped: #{cars.size}"
+
+  cars_scraper.errors.each do |error|
+    logger.error("Failed to scrape data for #{error[:link]}: #{error[:error]}")
+  end
+
   puts "\nGenerating CSV file..."
   csv_file_path = 'cars.csv'
   csv_generator = CSVGenerator.new(cars, csv_file_path)
