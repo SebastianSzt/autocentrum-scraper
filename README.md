@@ -35,3 +35,10 @@ The Car Data Scraper fetches car specification URLs from a sitemap, scrapes the 
     ```
 
 3. The scraped data will be saved in a `cars.csv` file in the project directory.
+
+## Running Tests
+
+To run the tests using RSpec, use the following command:
+
+```sh
+rspec
